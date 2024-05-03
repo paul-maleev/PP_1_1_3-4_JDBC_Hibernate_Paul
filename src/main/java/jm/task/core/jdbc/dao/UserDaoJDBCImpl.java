@@ -44,24 +44,24 @@ public class UserDaoJDBCImpl implements UserDao {
     private final Connection connection = Util.open();
 
 
-
-
     public UserDaoJDBCImpl() {
-
     }
 
     public static UserDao getInstance() {
         return INSTANCE;
     }
 
+    @Override
     public void createUsersTable() {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USERS_TABLE_SQL)) {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "Table already exists!");
         }
+
     }
 
+    @Override
     public void dropUsersTable() {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DROP_TABLE_USERS_SQL)) {
             preparedStatement.executeUpdate();
@@ -71,6 +71,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
+    @Override
     public void saveUser(String name, String lastName, byte age) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_SQL)) {
             preparedStatement.setString(1, name);
@@ -82,6 +83,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
+    @Override
     public void removeUserById(long id) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_USER_BY_ID_SQL)) {
             preparedStatement.setLong(1, id);
@@ -92,6 +94,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
+    @Override
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS_FROM_USER_SQL)) {
@@ -113,6 +116,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
+    @Override
     public void cleanUsersTable() {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CLEAN_TABLE_USER_SQL)) {
             preparedStatement.executeUpdate();
